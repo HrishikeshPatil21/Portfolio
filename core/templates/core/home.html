@@ -1,0 +1,87 @@
+{% extends "core/base.html" %}
+{% block content %}
+<div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+<div class="wrap">
+<nav><strong class="grad">{{ profile.initials }}</strong><div><a href="#skills">Skills</a><a href="#work">Projects</a><a href="#experience">Experience</a><a href="#education">Education</a><a href="#certificates">Certificates</a><a href="#contact">Contact</a><button id="theme" type="button">Theme</button></div></nav>
+
+<header class="hero">
+  <div>
+    <p class="hi">Hi, I’m</p>
+    <h1 class="name grad">{{ profile.name }}</h1>
+    <p class="role"><b id="typed" data-roles="{{ profile.roles }}">{{ profile.first_role }}</b></p>
+    <p class="sub">{{ profile.intro }}</p>
+    <div class="btns">
+      {% if profile.resume %}<a class="btn main" href="{{ profile.resume.url }}" target="_blank" rel="noopener">View resume</a>{% endif %}
+      <a class="btn" href="#work">View projects</a><a class="btn" href="#contact">Contact me</a>
+    </div>
+  </div>
+  <div class="pw">
+    <div class="ring"></div>
+    <div class="pic">{% if profile.photo %}<img src="{{ profile.photo.url }}" alt="{{ profile.name }}">{% else %}<span class="grad">{{ profile.initials }}</span>{% endif %}</div>
+    {% for b in profile.badge_list %}<span class="fl">{{ b }}</span>{% endfor %}
+  </div>
+</header>
+
+{% if stats %}<div class="stats">
+  {% for s in stats %}<div class="glass stat rv"><b class="grad" data-n="{{ s.value }}">0</b><span>{{ s.label }}</span></div>{% endfor %}
+</div>{% endif %}
+
+{% if groups %}<section id="skills">
+  <h2 class="rv">What I <span class="grad">work with</span></h2>
+  <div class="skills">
+    {% for g in groups %}<div class="glass sk rv"><h3>{{ g.title }}</h3><div class="chips">{% for k in g.skills.all %}<span{% if k.highlight %} class="hot"{% endif %}>{{ k.name }}</span>{% endfor %}</div></div>{% endfor %}
+  </div>
+</section>{% endif %}
+
+{% if projects %}<section id="work">
+  <h2 class="rv">Projects I’m <span class="grad">proud of</span></h2>
+  <div class="projects">
+    {% for p in projects %}<a class="proj tilt rv"{% if p.link %} href="{{ p.link }}" target="_blank" rel="noopener"{% endif %}>
+      <div class="ico">{{ p.icon }}</div><h3>{{ p.title }}</h3><p>{{ p.description }}</p>
+      <div class="chips">{% for t in p.tech_list %}<span>{{ t }}</span>{% endfor %}</div>
+      {% if p.link %}<span class="go">{{ p.link_label }}</span>{% endif %}
+    </a>{% endfor %}
+  </div>
+</section>{% endif %}
+
+{% if jobs %}<section id="experience">
+  <h2 class="rv">My <span class="grad">experience</span></h2>
+  <div class="tl">
+    {% for j in jobs %}<div class="glass job rv"><h3>{{ j.role }}</h3><small>{{ j.company }}, {{ j.period }}</small><p>{{ j.description }}</p>{% if j.link %}<a class="lnk" href="{{ j.link }}" target="_blank" rel="noopener">View certificate</a>{% endif %}</div>{% endfor %}
+  </div>
+</section>{% endif %}
+
+{% if educations %}<section id="education">
+  <h2 class="rv">My <span class="grad">education</span></h2>
+  <div class="edu3">
+    {% for e in educations %}<div class="glass rv"><i class="yr">{{ e.period }}</i><b>{{ e.title }}</b><span>{{ e.institute }}</span>{% if e.detail %}<span>{{ e.detail }}</span>{% endif %}{% if e.score %}<span class="cg">{{ e.score }}</span>{% endif %}</div>{% endfor %}
+  </div>
+</section>{% endif %}
+
+{% if certificates %}<section id="certificates">
+  <h2 class="rv">Certificates and <span class="grad">courses</span></h2>
+  <div class="edu">
+    {% for c in certificates %}<div class="glass rv"><span class="ic">{{ c.icon }}</span><b>{{ c.title }}</b><span>{{ c.issuer }}</span>{% if c.link %}<a class="lnk" href="{{ c.link }}" target="_blank" rel="noopener">View certificate</a>{% endif %}</div>{% endfor %}
+  </div>
+</section>{% endif %}
+
+<section id="contact">
+  <div class="glass contact rv">
+    <div><h2>Let’s build <span class="grad">something</span></h2>
+      <p>{{ profile.contact_text }}</p>
+      <a class="mail" href="mailto:{{ profile.email }}">{{ profile.email }}</a>
+      <p class="social">
+        {% if profile.github %}<a href="{{ profile.github }}" target="_blank" rel="noopener">GitHub</a>{% endif %}
+        {% if profile.linkedin %}<a href="{{ profile.linkedin }}" target="_blank" rel="noopener">LinkedIn</a>{% endif %}
+        {% if profile.resume %}<a href="{{ profile.resume.url }}" target="_blank" rel="noopener">View resume</a>{% endif %}
+      </p></div>
+    <form id="f" method="post" action="#contact">
+      {% csrf_token %}{{ form.name }}{{ form.email }}{{ form.message }}
+      <button class="btn main" type="submit">Send message</button>
+      <p id="ok" role="status">{% for m in messages %}{{ m }}{% endfor %}</p>
+    </form>
+  </div>
+</section>
+<footer>© {% now "Y" %} {{ profile.name }}. Built with Django.</footer>
+</div>
+{% endblock %}
