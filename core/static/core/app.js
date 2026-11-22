@@ -14,6 +14,19 @@
       c.style.transform='rotateY('+x*8+'deg) rotateX('+(-y*8)+'deg) translateY(-4px)'});
     c.addEventListener('pointerleave',function(){c.style.transform=''})});
   var root=document.documentElement;
+  var menu=document.getElementById('menu'),links=document.getElementById('nav-links');
+  if(menu&&links){
+    menu.addEventListener('click',function(){
+      var open=links.classList.toggle('open');
+      menu.setAttribute('aria-expanded',open?'true':'false');
+    });
+    links.querySelectorAll('a').forEach(function(link){
+      link.addEventListener('click',function(){
+        links.classList.remove('open');
+        menu.setAttribute('aria-expanded','false');
+      });
+    });
+  }
   document.getElementById('theme').addEventListener('click',function(){
     var dark=root.dataset.theme?root.dataset.theme==='dark':matchMedia('(prefers-color-scheme:dark)').matches;root.dataset.theme=dark?'light':'dark'});
 })();

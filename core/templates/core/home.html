@@ -2,7 +2,11 @@
 {% block content %}
 <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
 <div class="wrap">
-<nav><strong class="grad">{{ profile.initials }}</strong><div><a href="#skills">Skills</a><a href="#work">Projects</a><a href="#experience">Experience</a><a href="#education">Education</a><a href="#certificates">Certificates</a><a href="#contact">Contact</a><button id="theme" type="button">Theme</button></div></nav>
+<nav>
+  <strong class="grad">{{ profile.initials }}</strong>
+  <button id="menu" type="button" aria-label="Toggle navigation" aria-controls="nav-links" aria-expanded="false">Menu</button>
+  <div id="nav-links"><a href="#skills">Skills</a><a href="#work">Projects</a><a href="#experience">Experience</a><a href="#education">Education</a><a href="#certificates">Certificates</a><a href="#contact">Contact</a><button id="theme" type="button">Theme</button></div>
+</nav>
 
 <header class="hero">
   <div>
